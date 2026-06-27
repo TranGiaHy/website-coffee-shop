@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lịch sử đơn hàng</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="index.html" class="logo-link">
+        <div class="logo">
+          <img src="img/logo.png" alt="Coffee Shop Logo" />
+          <h2>COFFEE SHOP</h2>
+        </div>
+      </a>
+      <div class="user-actions"><a href="index.html">← Trở về</a></div>
+    </header>
+
+    <div class="container">
+      <h2 class="section-title">Lịch sử mua hàng</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Mã Đơn</th>
+            <th>Sản phẩm</th>
+            <th>Phương thức thanh toán</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody id="history-body"></tbody>
+      </table>
+    </div>
+
+    <script src="js/history.js"></script>
+  </body>
+</html>

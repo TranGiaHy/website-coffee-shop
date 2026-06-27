@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="admin-container">
+      <div class="sidebar">
+        <h2 style="margin-bottom: 30px; text-align: center">ADMIN PANEL</h2>
+        <a
+          href="#"
+          onclick="showTab('products')"
+          class="active"
+          id="tab-products"
+          >📦 Sản phẩm</a
+        >
+        <a href="#" onclick="showTab('orders')" id="tab-orders">🛒 Đơn hàng</a>
+        <a href="#" onclick="showTab('users')" id="tab-users">👥 Khách hàng</a>
+        <a href="#" onclick="showTab('reports')" id="tab-reports">📊 Báo cáo</a>
+        <a href="index.html" style="margin-top: 20px; color: #aaa"
+          >← Về Client (Xem SP)</a
+        >
+        <a
+          href="index.html"
+          onclick="logoutAdmin()"
+          style="margin-top: 20px; color: var(--danger-red)"
+          >← Đăng xuất</a
+        >
+      </div>
+
+      <div class="main-content">
+        <div id="content-products" class="tab-content">
+          <div class="admin-header">
+            <h2>Quản lý Sản phẩm</h2>
+            <button class="btn-primary" onclick="addProduct()">
+              ➕ Thêm SP
+            </button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Tên SP</th>
+                <th>Giá</th>
+                <th>Tồn kho</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="list-prod"></tbody>
+          </table>
+        </div>
+
+        <div id="content-orders" class="tab-content" style="display: none">
+          <h2>Quản lý Đơn hàng</h2>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Mã Đơn</th>
+                <th>Khách hàng</th>
+                <th>Giờ đặt</th>
+                <th>Ngày đặt</th>
+                <th>Chi tiết SP</th>
+                <th>Phương thức thanh toán</th>
+                <th>Tổng</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody id="list-order"></tbody>
+          </table>
+        </div>
+
+        <div id="content-users" class="tab-content" style="display: none">
+          <div class="admin-header">
+            <h2>Quản lý Người dùng</h2>
+            <button class="btn-primary" onclick="openAddUserModal()">
+              ➕ Thêm Khách hàng
+            </button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Tên</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="list-user"></tbody>
+          </table>
+        </div>
+
+        <div id="content-reports" class="tab-content" style="display: none">
+          <h2>Báo cáo Kinh doanh</h2>
+          <div class="dashboard-cards">
+            <div class="card">
+              <h3>Doanh thu</h3>
+              <h1 id="rev" style="color: var(--primary-green)">0</h1>
+            </div>
+            <div class="card">
+              <h3>Đơn hoàn tất</h3>
+              <h1 id="ord" style="color: var(--primary-green)">0</h1>
+            </div>
+          </div>
+          <h3>Sản phẩm bán chạy</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Tên SP</th>
+                <th>Đã bán</th>
+              </tr>
+            </thead>
+            <tbody id="list-top"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+
+    <div id="editModal" class="modal-overlay">
+      <div class="modal-content">
+        <h2 style="color: var(--primary-green); margin-bottom: 20px">
+          Sửa Sản Phẩm
+        </h2>
+        <input type="hidden" id="edit-id" />
+
+        <label>Tên SP:</label>
+        <input type="text" id="edit-name" class="modal-input" />
+
+        <label>Đường dẫn Hình ảnh (URL/Thư mục):</label>
+        <input type="text" id="edit-img" class="modal-input" />
+
+        <label>Giá tiền:</label>
+        <input type="number" id="edit-price" class="modal-input" />
+
+        <label>Tồn kho:</label>
+        <input type="number" id="edit-stock" class="modal-input" />
+
+        <label>Trạng thái kinh doanh:</label>
+        <select id="edit-status" class="modal-input" style="font-weight: bold">
+          <option value="true" style="color: #28a745">
+            🟢 Đang bán (Còn hàng)
+          </option>
+          <option value="false" style="color: var(--danger-red)">
+            🔴 Tạm ngưng (Hết hàng)
+          </option>
+        </select>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px">
+          <button class="btn-primary" style="flex: 1" onclick="saveEdit()">
+            LƯU THAY ĐỔI
+          </button>
+          <button class="btn-danger" style="flex: 1" onclick="closeModal()">
+            HỦY
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="addModal" class="modal-overlay">
+      <div class="modal-content">
+        <h2 style="color: var(--primary-green); margin-bottom: 20px">
+          Thêm Sản Phẩm Mới
+        </h2>
+
+        <label>Tên SP:</label>
+        <input
+          type="text"
+          id="add-name"
+          class="modal-input"
+          placeholder="VD: Trà Dâu Bạc Hà"
+        />
+
+        <label>Đường dẫn Hình ảnh (URL/Thư mục):</label>
+        <input
+          type="text"
+          id="add-img"
+          class="modal-input"
+          placeholder="VD: img/tradau.png"
+        />
+
+        <label>Giá tiền:</label>
+        <input
+          type="number"
+          id="add-price"
+          class="modal-input"
+          placeholder="VD: 55000"
+        />
+
+        <label>Tồn kho:</label>
+        <input
+          type="number"
+          id="add-stock"
+          class="modal-input"
+          placeholder="VD: 50"
+          value="50"
+        />
+
+        <label>Trạng thái kinh doanh:</label>
+        <select id="add-status" class="modal-input" style="font-weight: bold">
+          <option value="true" style="color: #28a745">
+            🟢 Đang bán (Còn hàng)
+          </option>
+          <option value="false" style="color: var(--danger-red)">
+            🔴 Tạm ngưng (Hết hàng)
+          </option>
+        </select>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px">
+          <button class="btn-primary" style="flex: 1" onclick="saveAdd()">
+            THÊM SẢN PHẨM
+          </button>
+          <button class="btn-danger" style="flex: 1" onclick="closeAddModal()">
+            HỦY
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="addUserModal" class="modal-overlay">
+      <div class="modal-content">
+        <h2 style="color: var(--primary-green); margin-bottom: 20px">
+          Thêm Khách Hàng
+        </h2>
+
+        <label>Họ và Tên:</label>
+        <input
+          type="text"
+          id="add-user-name"
+          class="modal-input"
+          placeholder="VD: Nguyễn Văn A"
+        />
+
+        <label>Email:</label>
+        <input
+          type="email"
+          id="add-user-email"
+          class="modal-input"
+          placeholder="VD: email@gmail.com"
+        />
+
+        <label>Mật khẩu:</label>
+        <input
+          type="password"
+          id="add-user-pass"
+          class="modal-input"
+          placeholder="Nhập mật khẩu"
+        />
+
+        <label>Giới tính:</label>
+        <select id="add-user-gender" class="modal-input">
+          <option value="Nam">Nam</option>
+          <option value="Nữ">Nữ</option>
+          <option value="Khác">Khác</option>
+        </select>
+
+        <label>Địa chỉ giao hàng:</label>
+        <input
+          type="text"
+          id="add-user-address"
+          class="modal-input"
+          placeholder="VD: Quận 4, TP.HCM"
+        />
+
+        <div style="display: flex; gap: 10px; margin-top: 20px">
+          <button class="btn-primary" style="flex: 1" onclick="saveAddUser()">
+            THÊM MỚI
+          </button>
+          <button
+            class="btn-danger"
+            style="flex: 1"
+            onclick="closeUserModal('addUserModal')"
+          >
+            HỦY
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="viewUserModal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Chi Tiết Khách Hàng</h2>
+
+        <p><strong>Họ tên:</strong> <span id="view-user-name"></span></p>
+        <p><strong>Email:</strong> <span id="view-user-email"></span></p>
+        <p><strong>Giới tính:</strong> <span id="view-user-gender"></span></p>
+        <p>
+          <strong>Số điện thoại:</strong> <span id="view-user-phone"></span>
+        </p>
+        <p><strong>Địa chỉ:</strong> <span id="view-user-address"></span></p>
+
+        <button
+          class="btn-primary"
+          style="width: 100%"
+          onclick="closeUserModal('viewUserModal')"
+        >
+          ĐÓNG
+        </button>
+      </div>
+    </div>
+    
+    <div id="editUserModal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Sửa thông tin khách hàng</h2>
+        <input type="hidden" id="edit-user-index" />
+
+        <label>Email (Không thể sửa):</label>
+        <input type="text" id="edit-user-email" class="modal-input" disabled />
+
+        <label>Họ tên:</label>
+        <input type="text" id="edit-user-name" class="modal-input" />
+
+        <label>Giới tính:</label>
+        <select id="edit-user-gender" class="modal-input">
+          <option value="Nam">Nam</option>
+          <option value="Nữ">Nữ</option>
+          <option value="Khác">Khác</option>
+        </select>
+
+        <label>Số điện thoại:</label>
+        <input type="text" id="edit-user-phone" class="modal-input" />
+
+        <label>Địa chỉ:</label>
+        <input type="text" id="edit-user-addr" class="modal-input" />
+
+        <div class="modal-buttons">
+          <button class="btn-primary" onclick="saveEditUser()">
+            LƯU THAY ĐỔI
+          </button>
+          <button class="btn-danger" onclick="closeUserModal('editUserModal')">
+            HỦY
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

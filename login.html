@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </head>
+  <body>
+    <div class="form-container">
+      <h2 class="form-title">ĐĂNG NHẬP</h2>
+
+      <div class="input-wrapper">
+        <i class="fa-solid fa-envelope left-icon"></i>
+        <input type="email" id="email" placeholder="Email address" required />
+      </div>
+
+      <div class="input-wrapper password-wrapper">
+        <i class="fa-solid fa-lock left-icon"></i>
+        <input type="password" id="pass" placeholder="Password" required />
+        <i id="eye-icon" class="fa-solid fa-eye-slash toggle-password" onclick="togglePassword()"></i>
+      </div>
+
+      <button onclick="login()">ĐĂNG NHẬP</button>
+
+      <p class="register-link">
+        <a href="register.html">Chưa có tài khoản? Đăng ký</a>
+      </p>
+    </div>
+    <script src="js/login.js"></script>
+  </body>
+</html>

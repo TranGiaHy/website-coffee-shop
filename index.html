@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>COFFEE SHOP - Trang Chủ</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-page="home">
+    <header>
+      <a href="index.html" class="logo-link">
+        <div class="logo">
+          <img src="img/logo.png" alt="Coffee Shop Logo" />
+          <h2>COFFEE SHOP</h2>
+        </div>
+      </a>
+      <div class="user-actions">
+        <a href="cart.html">🛒 Giỏ hàng (<span id="cart-count">0</span>)</a>
+        <span id="user-menu" class="user-menu-wrapper">
+          <a href="#" class="user-trigger">
+            👤 <span id="username-display">Đăng nhập</span>
+          </a>
+          <div id="user-dropdown" class="user-dropdown-content">
+            <a href="#" onclick="openEditProfile()">Cập nhật thông tin</a>
+            <a href="history.html">Lịch sử đơn</a>
+            <a href="#" onclick="logout()">Đăng xuất</a>
+          </div>
+        </span>
+      </div>
+    </header>
+
+    <nav>
+      <a href="index.html">Trang chủ</a>
+      <a href="menu.html">Thức uống</a>
+      <a href="packages.html">Sản phẩm đóng gói</a>
+      <a
+        href="admin.html"
+        id="admin-link"
+        style="color: var(--danger-red); display: none"
+        >Quản Lý Sản Phẩm</a
+      >
+    </nav>
+
+    <div class="top-banner-wrapper">
+      <img src="img/imghead3.png" alt="Top Banner" class="top-banner-img" />
+    </div>
+
+    <div class="hero-banner">
+      <div class="hero-banner-content">
+        <h1 class="hero-title">Good Coffee - Good Day</h1>
+        <p class="hero-desc">
+          Thưởng thức hương vị cà phê đậm đà và các loại trà hảo hạng được chọn
+          lọc kỹ lưỡng, mang đến cho bạn nguồn năng lượng tuyệt vời mỗi ngày.
+        </p>
+        <a href="menu.html">
+          <button class="btn-primary btn-hero">XEM MENU NGAY</button>
+        </a>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2 class="section-title">✨ Món Nổi Bật ✨</h2>
+
+      <div class="search-bar-container">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Tìm kiếm sản phẩm..."
+          oninput="renderProducts()"
+        />
+        <select id="filter-price" onchange="renderProducts()">
+          <option value="all">Tất cả giá</option>
+          <option value="asc">Giá: Thấp đến Cao</option>
+          <option value="desc">Giá: Cao đến Thấp</option>
+        </select>
+      </div>
+      <div class="product-grid" id="product-list"></div>
+    </div>
+
+    <div id="toast">Thông báo</div>
+    <script src="js/main.js"></script>
+
+    <div id="editProfileModal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Cập nhật thông tin</h2>
+
+        <label>Họ và tên:</label>
+        <input type="text" id="edit-user-name" class="modal-input" />
+
+        <label>Số điện thoại:</label>
+        <input type="text" id="edit-user-phone" class="modal-input" />
+
+        <label>Địa chỉ giao hàng:</label>
+        <input type="text" id="edit-user-addr" class="modal-input" />
+
+        <div class="modal-buttons">
+          <button class="btn-primary" onclick="saveProfile()">LƯU</button>
+          <button
+            class="btn-danger"
+            onclick="
+              document.getElementById('editProfileModal').style.display = 'none'
+            "
+          >
+            HỦY
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>COFFEE SHOP TRẢI NGHIỆM</h3>
+        <div class="footer-icons">
+          <span>☕ 100% Hạt cà phê chất lượng</span>
+          <span>🚚 Giao hàng nhanh trong 30p</span>
+          <span>🛡️ Kiểm định vệ sinh an toàn</span>
+          <span>⭐ Hơn 10.000 khách hàng tin dùng</span>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h3>KẾT NỐI VỚI CHÚNG TÔI</h3>
+        <div class="social-links">
+          <a href="https://www.facebook.com/lkha.yu"
+            >www.facebook.com/lkha.yu</a
+          >
+          |
+          <a href="https://www.instagram.com/lk.hanee._/"
+            >www.instagram.com/lk.hanee._</a
+          >
+        </div>
+        <p>Website: www.coffeeshop.vn</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 Coffee Shop - All rights reserved.
+    </div>
+  </footer>
+</html>
