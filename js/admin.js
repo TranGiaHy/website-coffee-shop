@@ -168,10 +168,6 @@ function loadO() {
     let paymentMethod = x.payment || "Thanh toán khi nhận hàng (COD)";
 
     // Tính ngày giao
-    //let orderDateObj = new Date(x.date);
-    //orderDateObj.setDate(orderDateObj.getDate() + 4);
-    //let deliveryDate = orderDateObj.toLocaleDateString();
-
     let deliveryDate = "Chưa có"; // Giá trị mặc định an toàn
 
     // Kiểm tra xem x.date có hợp lệ không trước khi tính toán
@@ -189,6 +185,7 @@ function loadO() {
         console.error("Lỗi định dạng ngày:", x.date);
       }
     }
+    
     tb.innerHTML += `
       <tr>
         <td><strong>${shortId}</strong></td>
