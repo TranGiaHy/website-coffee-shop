@@ -470,29 +470,61 @@ const defaultProducts = [
     stock: 100,
     desc: "Trà hòa tan tiện lợi.",
   },
+    {
+    id: 52,
+    name: "Cà Phê Rang Xay (250g)",
+    price: 90000,
+    category: "Sản phẩm đóng gói",
+    img: "img/caphe250g.png",
+    stock: 100,
+    desc: "Cà phê rang xay với hương vị đậm đà.",
+  },
+    {
+    id: 53,
+    name: "Cà Phê Rang Xay (500g)",
+    price: 170000,
+    category: "Sản phẩm đóng gói",
+    img: "img/capherang.png",
+    stock: 100,
+    desc: "Cà phê rang xay với hương vị đậm đà.",
+  },
+    {
+    id: 54,
+    name: "Combo cà phê hòa tan",
+    price: 160000,
+    category: "Sản phẩm đóng gói",
+    img: "img/combo.png",
+    stock: 100,
+    desc: "Cà phê hòa tan tiện lợi.",
+  },
 ];
 
-let savedProducts = JSON.parse(localStorage.getItem("products"));
+// 1. Kiểm tra và cập nhật products
+let savedProducts = JSON.parse(localStorage.getItem("products")) || [];
 
-if (!savedProducts) {
-    // Nếu chưa từng có dữ liệu, lưu mảng mặc định
-    localStorage.setItem("products", JSON.stringify(defaultProducts));
-} else {
-    // Nếu đã có dữ liệu cũ, kiểm tra xem có món nào bị thiếu "category" không
-    let needsUpdate = savedProducts.some(p => !p.category);
-    
-    if (needsUpdate) {
-        let updated = savedProducts.map(p => {
-            if (!p.category) {
-                // Phân loại dựa trên ID cũ
-                p.category = (p.id >= 46) ? "Sản phẩm đóng gói" : "Thức uống và Bánh";
-            }
-            return p;
-        });
-        localStorage.setItem("products", JSON.stringify(updated));
+let isUpdated = false;
+defaultProducts.forEach(defP => {
+    let exists = savedProducts.find(p => p.id === defP.id);
+    if (!exists) {
+        savedProducts.push(defP);
+        isUpdated = true;
     }
+});
+
+// Cập nhật lại category nếu thiếu (cho các món cũ hoặc món mới import)
+savedProducts = savedProducts.map(p => {
+    if (!p.category) {
+        p.category = (p.id >= 46) ? "Sản phẩm đóng gói" : "Thức uống và Bánh";
+        isUpdated = true;
+    }
+    return p;
+});
+
+if (isUpdated) {
+    localStorage.setItem("products", JSON.stringify(savedProducts));
 }
 
-// Khởi tạo các bảng khác nếu chưa có
+// 2. Khởi tạo các bảng khác nếu chưa có
 if (!localStorage.getItem("users")) localStorage.setItem("users", JSON.stringify([]));
 if (!localStorage.getItem("orders")) localStorage.setItem("orders", JSON.stringify([]));
+if (!localStorage.getItem("contacts")) localStorage.setItem("contacts", JSON.stringify([]));
