@@ -5,22 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
   <body>
     <div class="form-container">
       <h2 class="form-title">ĐĂNG KÝ</h2>
       
-      <input type="text" id="name" placeholder="Họ tên" required />
-      <input type="email" id="email" placeholder="Email" required />
-      
-      <div class="password-wrapper">
-        <input type="password" id="pass" placeholder="Mật khẩu" required />
-        <span class="toggle-password" onclick="togglePassword('pass')">👁️</span>
+      <div class="input-wrapper">
+        <i class="fa-solid fa-user left-icon"></i>
+        <input type="text" id="name" placeholder="Họ tên" required />
       </div>
 
-      <div class="password-wrapper">
+      <div class="input-wrapper">
+        <i class="fa-solid fa-envelope left-icon"></i>
+        <input type="email" id="email" placeholder="Email" required />
+      </div>
+      
+      <div class="input-wrapper password-wrapper">
+        <i class="fa-solid fa-lock left-icon"></i>
+        <input type="password" id="pass" placeholder="Mật khẩu" required />
+        <i id="eye-pass" class="fa-solid fa-eye-slash toggle-password" onclick="togglePassword('pass', 'eye-pass')"></i>
+      </div>
+
+      <div class="input-wrapper password-wrapper">
+        <i class="fa-solid fa-lock left-icon"></i>
         <input type="password" id="confirm-pass" placeholder="Xác nhận mật khẩu" required />
-        <span class="toggle-password" onclick="togglePassword('confirm-pass')">👁️</span>
+        <i id="eye-confirm" class="fa-solid fa-eye-slash toggle-password" onclick="togglePassword('confirm-pass', 'eye-confirm')"></i>
       </div>
 
       <button onclick="register()">ĐĂNG KÝ</button>
