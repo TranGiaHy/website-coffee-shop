@@ -57,6 +57,7 @@
                 <th>Khách hàng</th>
                 <th>Giờ đặt</th>
                 <th>Ngày đặt</th>
+                <th>Ngày giao</th>
                 <th>Chi tiết SP</th>
                 <th>Phương thức thanh toán</th>
                 <th>Tổng</th>
@@ -65,6 +66,31 @@
             </thead>
             <tbody id="list-order"></tbody>
           </table>
+        </div>
+
+        <div id="editOrderModal" class="modal-overlay">
+          <div class="modal-content">
+            <h2>Sửa thông tin đơn hàng</h2>
+            <input type="hidden" id="edit-order-index" />
+    
+            <label>Tên khách hàng:</label>
+            <input type="text" id="edit-order-customer" class="modal-input" />
+            
+            <label>Danh sách món:</label>
+            <div id="edit-order-items-list" style="margin-bottom: 15px;">
+            </div>
+    
+            <label>Tổng tiền:</label>
+            <input type="text" id="edit-order-total" class="modal-input" />
+
+            <label>Ngày giao hàng (dự kiến):</label>
+            <input type="date" id="edit-order-delivery-date" class="modal-input" />
+
+            <div class="modal-buttons">
+              <button class="btn-primary" onclick="saveEditOrder()">LƯU</button>
+              <button class="btn-danger" onclick="closeUserModal('editOrderModal')">HỦY</button>
+            </div>
+          </div>
         </div>
 
         <div id="content-users" class="tab-content" style="display: none">

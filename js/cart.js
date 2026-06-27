@@ -121,6 +121,8 @@ function executeOrder(name, phone, addr, payMethod) {
     // ---------------------------------
 
     let now = new Date();
+    let delivery = new Date();
+    delivery.setDate(now.getDate() + 4); // Cộng 4 ngày
     orders.push({
       id: "CFS-" + Date.now().toString().slice(-6),
       account: currentUser.email,
@@ -130,6 +132,7 @@ function executeOrder(name, phone, addr, payMethod) {
       payment: payMethod,
       time: now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
       date: now.toLocaleDateString("vi-VN"),
+      deliveryDate: delivery.toLocaleDateString("vi-VN"), // Lưu thêm ngày gia
       items: cart,
       total: document.getElementById("cart-total").innerText,
       status: "Đang xử lý",

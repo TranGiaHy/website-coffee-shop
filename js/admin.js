@@ -43,7 +43,8 @@ function editP(i) {
   document.getElementById("edit-img").value = prod.img;
   document.getElementById("edit-price").value = prod.price;
   document.getElementById("edit-stock").value = prod.stock;
-  document.getElementById("edit-category").value = prod.category || "Thức uống và Bánh"; // Nếu không có category thì mặc định là "Thức uống và Bánh"
+  document.getElementById("edit-category").value =
+    prod.category || "Thức uống và Bánh"; // Nếu không có category thì mặc định là "Thức uống và Bánh"
   document.getElementById("edit-desc").value = prod.desc || "";
 
   // Trạng thái (nếu món đó chưa có thuộc tính isAvailable thì mặc định là true)
@@ -97,7 +98,7 @@ function saveAdd() {
   let name = document.getElementById("add-name").value;
   let img = document.getElementById("add-img").value;
   let price = document.getElementById("add-price").value;
-  let category = document.getElementById("add-category").value; 
+  let category = document.getElementById("add-category").value;
   let stock = document.getElementById("add-stock").value;
   let isAvailable = document.getElementById("add-status").value === "true";
   let desc = document.getElementById("add-desc").value;
@@ -146,46 +147,147 @@ function loadO() {
   let o = JSON.parse(localStorage.getItem("orders")) || [];
   let tb = document.getElementById("list-order");
   tb.innerHTML = "";
-  
-  // Tạo một bản sao của mảng và đảo ngược để hiển thị, tránh làm loạn mảng gốc
+
   let reversedOrders = [...o].reverse();
 
   reversedOrders.forEach((x, i) => {
-    // TÍNH LẠI VỊ TRÍ GỐC (Tổng số phần tử - 1 - vị trí đang lặp)
     let originalIndex = o.length - 1 - i;
 
-    let str = x.items.map((it) => `${it.name} (x${it.quantity})`).join("<br>");
+    // Lọc bỏ các món có số lượng = 0
+    let activeItems = x.items.filter((it) => it.quantity > 0);
+    let str = activeItems
+      .map((it) => `${it.name} (x${it.quantity})`)
+      .join("<br>");
 
-    // Đảm bảo rút gọn mã CFS chuẩn xác
     let shortId = x.id.toString().includes("CFS")
       ? x.id
       : "CFS-" + x.id.toString().replace("ORD", "").slice(-6);
-
     let customerName = x.customer || "Khách hàng";
     let orderTime = x.time || "--:--";
     let orderDate = x.date || "Chưa cập nhật";
     let paymentMethod = x.payment || "Thanh toán khi nhận hàng (COD)";
 
+    // Tính ngày giao
+    //let orderDateObj = new Date(x.date);
+    //orderDateObj.setDate(orderDateObj.getDate() + 4);
+    //let deliveryDate = orderDateObj.toLocaleDateString();
+
+    let deliveryDate = "Chưa có"; // Giá trị mặc định an toàn
+
+    // Kiểm tra xem x.date có hợp lệ không trước khi tính toán
+    if (x.date && x.date.includes("/")) {
+      try {
+        let parts = x.date.split("/");
+        // Đảm bảo định dạng là dd/mm/yyyy
+        let d = new Date(parts[2], parts[1] - 1, parts[0]);
+
+        if (!isNaN(d.getTime())) {
+          d.setDate(d.getDate() + 4);
+          deliveryDate = d.toLocaleDateString("vi-VN");
+        }
+      } catch (e) {
+        console.error("Lỗi định dạng ngày:", x.date);
+      }
+    }
     tb.innerHTML += `
       <tr>
         <td><strong>${shortId}</strong></td>
         <td>${customerName}</td>
         <td>${orderTime}</td>
         <td>${orderDate}</td>
+        <td>${deliveryDate}</td> 
         <td>${str}</td>
         <td>${paymentMethod}</td>
         <td style="color: var(--danger-red); font-weight: bold;">${x.total}</td>
         <td>
-          <select onchange="updO(${originalIndex}, this.value)" style="padding: 5px; font-weight: bold; border-radius: 4px; margin-bottom: 5px;">
-            <option value="Đang xử lý" ${x.status === "Đang xử lý" ? "selected" : ""}>Đang xử lý</option>
-            <option value="Đã giao" ${x.status === "Đã giao" ? "selected" : ""}>Đã giao</option>
-          </select>
-          <br>
-          <button class="btn-danger" style="padding: 4px 8px; font-size: 12px; width: 100%;" onclick="delO(${originalIndex})">Xóa đơn</button>
+            <select onchange="updO(${originalIndex}, this.value)" style="padding: 5px; font-weight: bold; border-radius: 4px; margin-bottom: 5px;">
+                <option value="Đang xử lý" ${x.status === "Đang xử lý" ? "selected" : ""}>Đang xử lý</option>
+                <option value="Đã giao" ${x.status === "Đã giao" ? "selected" : ""}>Đã giao</option>
+            </select>
+            <br>
+            <button class="btn-primary" style="padding: 4px 8px; font-size: 12px; width: 100%; margin-bottom: 5px;" onclick="editO(${originalIndex})">Sửa đơn</button>
+            <button class="btn-danger" style="padding: 4px 8px; font-size: 12px; width: 100%;" onclick="delO(${originalIndex})">Xóa đơn</button>
         </td>
       </tr>
     `;
   });
+}
+
+// Mở modal sửa
+function editO(i) {
+  let o = JSON.parse(localStorage.getItem("orders"));
+  let products = JSON.parse(localStorage.getItem("products"));
+  let order = o[i];
+
+  document.getElementById("edit-order-index").value = i;
+  document.getElementById("edit-order-customer").value = order.customer;
+
+  let listContainer = document.getElementById("edit-order-items-list");
+  // Giữ nguyên code của bạn, chỉ thêm nút Thêm ở trên cùng
+  listContainer.innerHTML = `<button type="button" class="btn-primary" onclick="addNewItem()" style="margin-bottom: 10px;">+ Thêm món</button>`;
+
+  // Hiển thị từng món trong đơn
+  order.items.forEach((item, index) => {
+    renderItemRow(item.name, item.quantity);
+  });
+
+  document.getElementById("editOrderModal").style.display = "flex";
+}
+
+// Hàm phụ để vẽ một dòng món mới
+function renderItemRow(name = "", qty = 1) {
+  let products = JSON.parse(localStorage.getItem("products"));
+  let selectHtml = `<select class="modal-input item-select">`;
+  products.forEach((p) => {
+    selectHtml += `<option value="${p.name}" ${p.name === name ? "selected" : ""}>${p.name}</option>`;
+  });
+  selectHtml += `</select>`;
+
+  let row = document.createElement("div");
+  row.style.cssText = "display: flex; gap: 5px; margin-bottom: 10px;";
+  row.innerHTML = `
+        ${selectHtml}
+        <input type="number" class="modal-input item-qty" value="${qty}" min="1" style="width: 60px;">
+        <button type="button" class="btn-danger" onclick="this.parentElement.remove()">X</button>
+    `;
+  document.getElementById("edit-order-items-list").appendChild(row);
+}
+
+// Hàm để nút "+ Thêm món" gọi tới
+function addNewItem() {
+  renderItemRow();
+}
+
+function saveEditOrder() {
+  let i = document.getElementById("edit-order-index").value;
+  let o = JSON.parse(localStorage.getItem("orders"));
+  let products = JSON.parse(localStorage.getItem("products"));
+
+  o[i].customer = document.getElementById("edit-order-customer").value;
+
+  let newItems = [];
+  document.querySelectorAll(".item-select").forEach((select, idx) => {
+    let name = select.value;
+    let qty = parseInt(document.querySelectorAll(".item-qty")[idx].value);
+
+    // Chỉ thêm vào nếu số lượng > 0
+    if (qty > 0) {
+      newItems.push({ name: name, quantity: qty });
+    }
+  });
+
+  // Tính lại tổng tiền
+  let newTotal = newItems.reduce((sum, item) => {
+    let p = products.find((prod) => prod.name === item.name);
+    return sum + (p ? p.price * item.quantity : 0);
+  }, 0);
+
+  o[i].items = newItems;
+  o[i].total = newTotal.toLocaleString() + " đ";
+
+  localStorage.setItem("orders", JSON.stringify(o));
+  closeUserModal("editOrderModal");
+  loadO();
 }
 
 function updO(i, st) {
@@ -217,12 +319,15 @@ function loadU() {
 }
 
 function loadC() {
-    let c = JSON.parse(localStorage.getItem("contacts")) || [];
-    let tb = document.getElementById("list-contact");
-    tb.innerHTML = "";
-    c.forEach((x, i) => { // Thêm i vào vòng lặp
-        let imgHtml = x.img ? `<img src="${x.img}" style="width: 50px; height: 50px; object-fit: cover;">` : "Không";
-        tb.innerHTML += `
+  let c = JSON.parse(localStorage.getItem("contacts")) || [];
+  let tb = document.getElementById("list-contact");
+  tb.innerHTML = "";
+  c.forEach((x, i) => {
+    // Thêm i vào vòng lặp
+    let imgHtml = x.img
+      ? `<img src="${x.img}" style="width: 50px; height: 50px; object-fit: cover;">`
+      : "Không";
+    tb.innerHTML += `
             <tr>
                 <td>${x.name}</td>
                 <td>${x.email}</td>
@@ -234,16 +339,16 @@ function loadC() {
                     <button class="btn-danger" onclick="delContact(${i})">Xóa</button>
                 </td>
             </tr>`;
-    });
+  });
 }
 
 function delContact(i) {
-    if (confirm("Bạn có chắc chắn muốn xóa góp ý này không?")) {
-        let c = JSON.parse(localStorage.getItem("contacts")) || [];
-        c.splice(i, 1); // Xóa phần tử tại vị trí i
-        localStorage.setItem("contacts", JSON.stringify(c)); // Lưu lại
-        loadC(); // Load lại bảng
-    }
+  if (confirm("Bạn có chắc chắn muốn xóa góp ý này không?")) {
+    let c = JSON.parse(localStorage.getItem("contacts")) || [];
+    c.splice(i, 1); // Xóa phần tử tại vị trí i
+    localStorage.setItem("contacts", JSON.stringify(c)); // Lưu lại
+    loadC(); // Load lại bảng
+  }
 }
 
 function lockU(i) {
@@ -299,18 +404,25 @@ function viewUser(i) {
   let user = u[i];
 
   // Kiểm tra nếu user bị undefined thì dừng lại
-  if (!user) { alert("Không tìm thấy thông tin!"); return; }
+  if (!user) {
+    alert("Không tìm thấy thông tin!");
+    return;
+  }
 
   // Gán giá trị
-  document.getElementById("view-user-name").innerText = user.name || "Chưa cập nhật";
-  document.getElementById("view-user-email").innerText = user.email || "Chưa cập nhật";
-  document.getElementById("view-user-gender").innerText = user.gender || "Chưa cập nhật";
-  
+  document.getElementById("view-user-name").innerText =
+    user.name || "Chưa cập nhật";
+  document.getElementById("view-user-email").innerText =
+    user.email || "Chưa cập nhật";
+  document.getElementById("view-user-gender").innerText =
+    user.gender || "Chưa cập nhật";
+
   // KIỂM TRA ĐÚNG ID NÀY:
   let phoneEl = document.getElementById("view-user-phone");
   if (phoneEl) phoneEl.innerText = user.phone || "Chưa cập nhật";
-  
-  document.getElementById("view-user-address").innerText = user.address || "Chưa cập nhật";
+
+  document.getElementById("view-user-address").innerText =
+    user.address || "Chưa cập nhật";
 
   document.getElementById("viewUserModal").style.display = "flex";
 }
@@ -380,28 +492,28 @@ function closeUserModal(modalId) {
 function editUser(i) {
   let u = JSON.parse(localStorage.getItem("users"));
   let user = u[i];
-  
+
   document.getElementById("edit-user-index").value = i;
   document.getElementById("edit-user-email").value = user.email;
   document.getElementById("edit-user-name").value = user.name || "";
   document.getElementById("edit-user-gender").value = user.gender || "Nam";
   document.getElementById("edit-user-phone").value = user.phone || "";
   document.getElementById("edit-user-addr").value = user.address || "";
-  
+
   document.getElementById("editUserModal").style.display = "flex";
 }
 
 function saveEditUser() {
   let i = document.getElementById("edit-user-index").value;
   let u = JSON.parse(localStorage.getItem("users"));
-  
+
   u[i].name = document.getElementById("edit-user-name").value;
   u[i].gender = document.getElementById("edit-user-gender").value;
   u[i].phone = document.getElementById("edit-user-phone").value;
   u[i].address = document.getElementById("edit-user-addr").value;
-  
+
   localStorage.setItem("users", JSON.stringify(u));
-  closeUserModal('editUserModal');
+  closeUserModal("editUserModal");
   loadU();
   alert("Cập nhật thành công!");
 }
