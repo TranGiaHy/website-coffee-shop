@@ -1,0 +1,190 @@
+body {
+  background-color: var(--light-bg);
+  color: var(--text-dark);
+}
+
+/* Header & Nav */
+header {
+  background: #0a0705;
+  padding: 15px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+}
+
+#content-reports h2 {
+  padding-bottom: 20px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 40px;
+}
+
+.logo h2 {
+  color: var(--primary-green);
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-style: italic;
+  font-size: 24px;
+}
+
+.logo-link {
+  text-decoration: none;
+  display: block;
+}
+
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.search-bar-container input,
+.search-bar-container select {
+  padding: 12px 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text-dark);
+  width: 100%;
+  max-width: 300px; /* Giới hạn độ rộng để trông cân đối */
+}
+
+.user-actions a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: var(--primary-green);
+  font-weight: bold;
+}
+
+nav {
+  background: #0a0705;
+  display: flex;
+  justify-content: center;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-color);
+  gap: 30px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #aaa;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+nav a:hover {
+  color: var(--primary-green);
+}
+
+/* Product Grid */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 15px;
+}
+
+.section-title {
+  text-align: center;
+  color: var(--primary-green);
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 28px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+/* Product Card */
+.product-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: 0.3s;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.product-card:hover {
+  box-shadow: 0 0 15px rgba(198, 156, 109, 0.2);
+  border-color: var(--primary-green);
+  transform: translateY(-3px);
+}
+
+.product-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  background: transparent;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.5));
+}
+
+.product-card h3 {
+  font-size: 18px;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  flex-grow: 1;
+}
+
+.product-card .price {
+  font-weight: bold;
+  color: var(--primary-green);
+  margin-bottom: 20px;
+  display: block;
+  font-size: 16px;
+}
+
+/* Buttons & Forms */
+.btn-primary {
+  background: var(--primary-green);
+  color: #111;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+  text-transform: uppercase;
+}
+
+.btn-primary:hover {
+  background: var(--hover-green);
+  box-shadow: 0 0 10px var(--primary-green);
+}
+
+.btn-danger {
+  background: transparent;
+  border: 1px solid var(--danger-red);
+  color: var(--danger-red);
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s;
+}
