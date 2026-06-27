@@ -10,15 +10,15 @@ function renderProducts() {
   let keyword =
     document.getElementById("search-input")?.value.toLowerCase() || "";
   let sortPrice = document.getElementById("filter-price")?.value || "all";
-
-// Lọc sản phẩm theo từng trang
+  
+// Lọc sản phẩm theo từng trang dựa trên category
   let filtered = products;
   if (pageType === "menu") {
-    // Thức uống: lấy ID < 46 HOẶC những món mới thêm có ID lớn (Date.now)
-    filtered = products.filter((p) => p.id < 46 || p.id > 1000); 
+    // Chỉ lấy sản phẩm có category là 'Thức uống và Bánh'
+    filtered = products.filter((p) => p.category === "Thức uống và Bánh"); 
   } else if (pageType === "packages") {
-    // Đóng gói: Chỉ lấy đúng ID từ 46 đến 99 (các món đóng gói cũ)
-    filtered = products.filter((p) => p.id >= 46 && p.id < 1000); 
+    // Chỉ lấy sản phẩm có category là 'Sản phẩm đóng gói'
+    filtered = products.filter((p) => p.category === "Sản phẩm đóng gói"); 
   } else if (pageType === "home") {
     const featuredIds = [27, 11, 19, 29, 39, 13, 41, 42];
     filtered = products.filter((p) => featuredIds.includes(p.id));

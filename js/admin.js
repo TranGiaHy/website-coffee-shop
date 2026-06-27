@@ -42,6 +42,8 @@ function editP(i) {
   document.getElementById("edit-img").value = prod.img;
   document.getElementById("edit-price").value = prod.price;
   document.getElementById("edit-stock").value = prod.stock;
+  document.getElementById("edit-category").value = prod.category || "Thức uống và Bánh"; // Nếu không có category thì mặc định là "Thức uống và Bánh"
+  document.getElementById("edit-desc").value = prod.desc || "";
 
   // Trạng thái (nếu món đó chưa có thuộc tính isAvailable thì mặc định là true)
   let isAvailable = prod.isAvailable !== false;
@@ -60,6 +62,8 @@ function saveEdit() {
   p[i].img = document.getElementById("edit-img").value;
   p[i].price = parseInt(document.getElementById("edit-price").value);
   p[i].stock = parseInt(document.getElementById("edit-stock").value);
+  p[i].category = document.getElementById("edit-category").value;
+  p[i].desc = document.getElementById("edit-desc").value;
   p[i].isAvailable = document.getElementById("edit-status").value === "true"; // Đổi thành boolean
 
   localStorage.setItem("products", JSON.stringify(p));
@@ -92,8 +96,10 @@ function saveAdd() {
   let name = document.getElementById("add-name").value;
   let img = document.getElementById("add-img").value;
   let price = document.getElementById("add-price").value;
+  let category = document.getElementById("add-category").value; 
   let stock = document.getElementById("add-stock").value;
   let isAvailable = document.getElementById("add-status").value === "true";
+  let desc = document.getElementById("add-desc").value;
 
   // Kiểm tra nếu admin quên nhập tên hoặc giá
   if (!name || !price) {
@@ -109,8 +115,9 @@ function saveAdd() {
     name: name,
     price: parseInt(price),
     stock: parseInt(stock),
-    img: img || "img/logo.png", // Nếu admin quên nhập ảnh, dùng tạm logo
-    desc: "Đang cập nhật mô tả...",
+    img: img || "img/logo.png",
+    category: category,
+    desc: desc || "Đang cập nhật mô tả...",
     isAvailable: isAvailable,
   });
 
