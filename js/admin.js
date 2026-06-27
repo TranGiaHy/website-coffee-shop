@@ -11,6 +11,7 @@ function showTab(t) {
   if (t === "orders") loadO();
   if (t === "users") loadU();
   if (t === "reports") loadR();
+  if (t === "contacts") loadC();
 }
 
 function loadP() {
@@ -213,6 +214,36 @@ function loadU() {
       </tr>
     `;
   });
+}
+
+function loadC() {
+    let c = JSON.parse(localStorage.getItem("contacts")) || [];
+    let tb = document.getElementById("list-contact");
+    tb.innerHTML = "";
+    c.forEach((x, i) => { // Thêm i vào vòng lặp
+        let imgHtml = x.img ? `<img src="${x.img}" style="width: 50px; height: 50px; object-fit: cover;">` : "Không";
+        tb.innerHTML += `
+            <tr>
+                <td>${x.name}</td>
+                <td>${x.email}</td>
+                <td>${x.phone || ""}</td>
+                <td>${x.msg}</td>
+                <td>${imgHtml}</td>
+                <td>${x.date}</td>
+                <td>
+                    <button class="btn-danger" onclick="delContact(${i})">Xóa</button>
+                </td>
+            </tr>`;
+    });
+}
+
+function delContact(i) {
+    if (confirm("Bạn có chắc chắn muốn xóa góp ý này không?")) {
+        let c = JSON.parse(localStorage.getItem("contacts")) || [];
+        c.splice(i, 1); // Xóa phần tử tại vị trí i
+        localStorage.setItem("contacts", JSON.stringify(c)); // Lưu lại
+        loadC(); // Load lại bảng
+    }
 }
 
 function lockU(i) {

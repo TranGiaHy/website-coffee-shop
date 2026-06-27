@@ -4,22 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
+    <link rel="icon" type="image/png" href="img/logo.png">
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <div class="admin-container">
       <div class="sidebar">
         <h2 style="margin-bottom: 30px; text-align: center">ADMIN PANEL</h2>
-        <a
-          href="#"
-          onclick="showTab('products')"
-          class="active"
-          id="tab-products"
-          >📦 Sản phẩm</a
-        >
+        <a href="#" onclick="showTab('products')" class="active" id="tab-products">📦 Sản phẩm</a>
         <a href="#" onclick="showTab('orders')" id="tab-orders">🛒 Đơn hàng</a>
         <a href="#" onclick="showTab('users')" id="tab-users">👥 Khách hàng</a>
         <a href="#" onclick="showTab('reports')" id="tab-reports">📊 Báo cáo</a>
+        <a href="#" onclick="showTab('contacts')" id="tab-contacts">✉️ Liên hệ</a>
         <a href="index.html" style="margin-top: 20px; color: #aaa"
           >← Về Client (Xem SP)</a
         >
@@ -112,6 +108,24 @@
               </tr>
             </thead>
             <tbody id="list-top"></tbody>
+          </table>
+        </div>
+
+        <div id="content-contacts" class="tab-content" style="display: none">
+          <h2>Danh sách góp ý</h2>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Tên</th>
+                <th>Email</th>
+                <th>SĐT</th>
+                <th>Nội dung</th>
+                <th>Hình ảnh</th>
+                <th>Ngày</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="list-contact"></tbody>
           </table>
         </div>
       </div>

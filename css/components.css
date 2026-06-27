@@ -490,6 +490,10 @@ footer {
   border-color: var(--primary-green);
 }
 
+textarea.modal-input {
+    resize: none;
+}
+
 /* Hiệu ứng hết hàng */
 .out-of-stock-overlay {
   position: absolute;

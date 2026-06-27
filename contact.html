@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>COFFEE SHOP - Liên Hệ</title>
+    <link rel="icon" type="image/png" href="img/logo.png">
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="index.html" class="logo-link">
+        <div class="logo">
+          <img src="img/logo.png" alt="Logo" />
+          <h2>COFFEE SHOP</h2>
+        </div>
+      </a>
+      <div class="user-actions">
+        <a href="cart.html">🛒 Giỏ hàng (<span id="cart-count">0</span>)</a>
+        <span id="user-menu" class="user-menu-wrapper">
+          <a href="#" class="user-trigger">👤 <span id="username-display">Đăng nhập</span></a>
+          <div id="user-dropdown" class="user-dropdown-content"></div>
+        </span>
+      </div>
+    </header>
+
+    <nav>
+      <a href="index.html">TRANG CHỦ</a>
+      <a href="menu.html">THỨC UỐNG</a>
+      <a href="packages.html">SẢN PHẨM ĐÓNG GÓI</a>
+      <a href="contact.html" style="color: var(--primary-green)">LIÊN HỆ</a>
+      <a href="admin.html" id="admin-link" style="color: var(--danger-red); display: none">Quản Lý Sản Phẩm</a>
+    </nav>
+
+    <div class="container">
+      <h2 class="section-title">LIÊN HỆ GÓP Ý</h2>
+      <div class="form-container">
+        <input type="text" id="contact-name" placeholder="Họ và tên" />
+        <input type="email" id="contact-email" placeholder="Email của bạn" />
+        <input type="text" id="contact-phone" placeholder="SĐT của bạn" />
+        <textarea id="contact-msg" class="modal-input" placeholder="Nội dung góp ý..." rows="5"></textarea>
+        <input type="file" id="contact-img" accept="image/*" />
+        <button class="btn-primary" style="width: 100%" onclick="sendContact()">GỬI GÓP Ý</button>
+      </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/contact.js"></script>
+  </body>
+</html>
