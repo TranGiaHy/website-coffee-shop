@@ -322,7 +322,7 @@ function loadC() {
   c.forEach((x, i) => {
     // Thêm i vào vòng lặp
     let imgHtml = x.img
-      ? `<img src="../${x.img}" style="width: 50px; height: 50px; object-fit: cover;">`
+      ? `<img src="${x.img}" style="width: 50px; height: 50px; object-fit: cover;">`
       : "Không";
     tb.innerHTML += `
             <tr>
