@@ -18,7 +18,7 @@ function loadCart() {
     total += itemTotal;
     tbody.innerHTML += `
             <tr>
-                <td><img src="${item.img}" width="50" style="vertical-align: middle; margin-right: 10px;"> ${item.name}</td>
+                <td><img src="../${item.img}" width="50" style="vertical-align: middle; margin-right: 10px;"> ${item.name}</td>
                 <td>${item.price.toLocaleString("vi-VN")} đ</td>
                 <td>
                     <button style="padding: 2px 8px;" onclick="changeQty(${index}, -1)">-</button>

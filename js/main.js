@@ -48,9 +48,9 @@ filtered.forEach((p) => {
 
     // 3. Xử lý Hình ảnh (Làm mờ và đè chữ nếu hết hàng)
     let imageHtml = isAvailable
-      ? `<img src="${p.img}" alt="${p.name}">`
+      ? `<img src="../${p.img}" alt="${p.name}">`
       : `<div style="position: relative;">
-             <img src="${p.img}" alt="${p.name}" class="img-grayscale">
+             <img src="../${p.img}" alt="${p.name}" class="img-grayscale">
              <div class="out-of-stock-overlay">HẾT HÀNG</div>
          </div>`;
 
